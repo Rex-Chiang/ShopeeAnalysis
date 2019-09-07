@@ -18,12 +18,19 @@ class Crawler:
         
         host = "rds-mysql-rex.cscjvvfseets.us-east-1.rds.amazonaws.com"
 
-        file = open('C:/Users/m4104/Desktop/Shopee-analysis/pwd.txt','r')
+        file = open('C:/Users/m4104/Desktop/ShopeeAnalysis/pwd.txt','r')
         pwd = file.read().rstrip()
         
         self.conn = MySQLdb.connect(host, port=3306, user='rex', passwd=pwd, db="shopee2019")        
         self.cur = self.conn.cursor()
-        
+    
+    # 檢查資料庫是否已有重複資料
+    def check_item(self):
+        sql = "SELECT * FROM shopee2019.iteminfo WHERE item_id IN (%s);"
+        val = (itemid,)
+        self.cur.execute(sql,val)
+        return self.cur.fetchall()
+    
     # 以MySQL插入使用者蝦皮賣場ID及名字
     def shops(self):
         
@@ -33,48 +40,34 @@ class Crawler:
         self.conn.commit()
     
     def iteminfo(self):
-        sql = "INSERT INTO shopee2019.iteminfo (shop_id, item_id, like_count, historical_sold,\
-        star5, star4, star3, star2, star1, rating_star, price)\
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        
-        star_count = self.item["item_rating"]["rating_count"]
-        
-        # 包括賣場ID、商品ID、喜好次數、歷史銷售量、客戶評分、商品價錢
-        val = (shopid, itemid, self.item["liked_count"], self.item["historical_sold"],\
-               star_count[-1], star_count[-2], star_count[-3], star_count[-4], star_count[-5],\
-               self.item["item_rating"]["rating_star"], self.item["price"]//100000)
-        self.cur.execute(sql, val)
-        self.conn.commit()
+        if not self.check_item():
+            sql = "INSERT INTO shopee2019.iteminfo (shop_id, item_id, like_count, historical_sold,\
+            star5, star4, star3, star2, star1, rating_star, price)\
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            
+            star_count = self.item["item_rating"]["rating_count"]
+            
+            # 包括賣場ID、商品ID、喜好次數、歷史銷售量、客戶評分、商品價錢
+            val = (shopid, itemid, self.item["liked_count"], self.item["historical_sold"],\
+                   star_count[-1], star_count[-2], star_count[-3], star_count[-4], star_count[-5],\
+                   self.item["item_rating"]["rating_star"], self.item["price"]//100000)
+            self.cur.execute(sql, val)
+            self.conn.commit()
         
     def images(self):
-        sql = "INSERT INTO shopee2019.images (item_id, img) VALUES (%s, %s)"
-        val = (itemid, "https://cf.shopee.tw/file/"+ self.item["image"] + "_tn")
-        self.cur.execute(sql,val)
-        self.conn.commit()
+        if not self.check_item():
+            sql = "INSERT INTO shopee2019.images (item_id, img) VALUES (%s, %s)"
+            val = (itemid, "https://cf.shopee.tw/file/"+ self.item["image"] + "_tn")
+            self.cur.execute(sql,val)
+            self.conn.commit()
 
     # 關閉MySQL連線
     def close(self):
         self.conn.close()
     
     def run(self):
-        #sql = "SELECT * FROM shopee2019.shops WHERE shop_id IN (%s);"
-        #val = (shopid,)
-        #self.cur.execute(sql,val)
-        #if self.cur.fetchall():
-        #    self.iteminfo()
-        #else:
-            #self.shops()
         self.iteminfo()
         self.images()
-        
-        #image = "https://cf.shopee.tw/file/" + self.item["image"]
-        
-        #print(like_count)
-        #print(historical_sold)
-        #print(star_count)
-        #print(rating_star)
-        #print(price)
-        #print(image)
         
 if __name__ == "__main__":
     url = "https://shopee.tw/【2019二代新款-】水冷扇-arctic-air-水冷空調-USB桌扇-攜帶型冷氣-空調風扇-水霧風扇-i.829655.1310131145"
