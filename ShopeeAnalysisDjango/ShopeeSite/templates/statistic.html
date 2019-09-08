@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %} SHOPEE ANALYSIS{% endblock %}
+{% block content %}
+<div class='container'>
+{% if message %}
+    <div class='alert alert-warning'>{{ message }}</div>
+{% endif %}
+<form name='my form' action='.' method='POST'>
+{% csrf_token %}
+    <br/>
+    : )<br/><br/>
+    <label for='shopname'>Enter the Shopee shop name <span class="glyphicon glyphicon-search"></span></label>
+    <input id='shopname' type='text' name='shop name'><br/><br/>
+    <label for='url'>Enter the Shopee item's url <span class="glyphicon glyphicon-search"></span></label>
+    <input id='url' type='text' name='url'><br/><br/>
+    <input type='submit' value='submit'>
+    <input type='reset' value='reset'>
+</form>
+</div>
+{% endblock %}
