@@ -70,7 +70,7 @@ class Crawler:
         self.images()
         
 if __name__ == "__main__":
-    url = "https://shopee.tw/【2019二代新款-】水冷扇-arctic-air-水冷空調-USB桌扇-攜帶型冷氣-空調風扇-水霧風扇-i.829655.1310131145"
+    url = "https://shopee.tw/%E3%80%90%E9%97%9C%E6%B3%A8%E5%86%8D%E6%8A%9820%E5%85%83%E3%80%91%E8%A7%B8%E6%8E%A7%E5%B0%8F%E5%A4%9C%E7%87%88-%E6%8B%8D%E6%8B%8D%E7%87%88-%E8%BB%8A%E5%BB%82%E7%87%88-%E8%A1%A3%E6%AB%A5%E7%87%88-%E7%B7%8A%E6%80%A5%E7%85%A7%E6%98%8E%E7%87%88-%E5%BE%8C%E8%BB%8A%E5%BB%82%E7%87%88-LED%E7%87%88-%E6%8C%89%E5%A3%93%E7%87%88-%E8%A7%B8%E7%A2%B0%E7%87%88-%E5%90%B8%E9%A0%82%E7%87%88-%E8%BB%8A%E9%A0%82%E7%87%88-i.829655.2793180018"
     url_split = url.split(".")
     shopname = str(input("SHOP NAME : "))
     shopid = url_split[-2]

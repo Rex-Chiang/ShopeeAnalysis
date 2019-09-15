@@ -3,6 +3,11 @@ from django.contrib import auth, messages
 from ShopeeSite import models
 from .Crawler import Crawler
 
+def index(request):
+    ItemInfo = models.ItemInfo.objects.all()
+    
+    return render(request, 'home.html', locals())
+
 # 統計頁面負責呼叫Crawler.py擷取商品資訊
 def statistic(request):
     try:

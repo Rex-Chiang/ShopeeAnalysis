@@ -1,0 +1,32 @@
+  
+{% extends 'base.html' %}
+{% block title %} SHOPEE ANALYSIS {% endblock %}
+{% block content %}
+
+<div class='container'>
+{% for message in messages %}
+    <div class='alert alert-{{ message.tags }}'>{{ message }}</div>
+{% endfor %}
+<nav class='navbar navbar-inverse'>
+    <div class='col-md-12'>
+
+            <div class='panel-heading' align=center>
+                <a href='/'><h3><span class='glyphicon glyphicon-cloud-download'></span> Analyze Statistically </h3></a>
+                {% if user.is_authenticated %}
+                    {% if user.socialaccount_set.all.0.extra_data.name %}
+                        <img src='{{user.socialaccount_set.all.0.get_avatar_url}}' width='100'><br/><br/>
+                        <a href='/'>?{{user.socialaccount_set.all.0.extra_data.name}}?</a>
+                    {% else %}
+                        <a href='/'> Welcome: {{ user.username }}</a>
+                    {% endif %}
+                {% else %}
+                    <a href='/accounts/login/'><p>Welcome to sign up/login your account</p></a>
+                {% endif %}
+            </div>
+
+    </div>
+</nav>
+
+<a href='/accounts/login/' class='list-group-item' title='Please Login'> Please login </a>
+</div>
+{% endblock %}

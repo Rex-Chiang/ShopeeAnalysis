@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '50747610452-o155tpclj22oj7p5s62cfu876iojp4jk.apps.googleusercontent.com' # Google Consumer Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'gI5vra15CW5olMld-IjOfrBT' # Google Consumer Secret
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,10 +44,10 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    #'allauth.socialaccount.providers.google',
 ]
 
-SITE_ID = 2
+SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
@@ -135,6 +138,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'ShopeeSite/static'),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 import dj_database_url
 db_from_env = dj_database_url.config()

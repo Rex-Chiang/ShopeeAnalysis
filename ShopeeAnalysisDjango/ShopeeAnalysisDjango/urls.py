@@ -20,6 +20,7 @@ from ShopeeSite import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.statistic),
+    path('', views.index),
+    path('analysis/', views.statistic),
     path('accounts/', include('allauth.urls')),
 ]

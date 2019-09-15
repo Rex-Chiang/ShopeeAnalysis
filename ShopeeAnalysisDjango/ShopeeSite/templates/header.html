@@ -9,7 +9,7 @@
         <ul class='nav navbar-nav'>
             <li class='active'><a href='/'><span class="glyphicon glyphicon-home"></span> Home</a></li>
             {% if user.is_authenticated %}
-            <li><a href='/statistic'><span class="glyphicon glyphicon-hourglass"></span> Analysis</a></li>
+            <li><a href='/analysis'><span class="glyphicon glyphicon-hourglass"></span> Analysis</a></li>
             <li><a href="{% url 'account_logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             {% else %}
             <li><a href="{% url 'account_login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

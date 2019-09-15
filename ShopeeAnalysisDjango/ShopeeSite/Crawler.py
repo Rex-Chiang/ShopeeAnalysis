@@ -5,6 +5,7 @@ import MySQLdb
 class Crawler:
     def __init__(self, shopname, shopid, itemid):
         
+        self.shopname = shopname
         self.shopid = shopid
         self.itemid = itemid
         
@@ -22,11 +23,17 @@ class Crawler:
         
         host = "rds-mysql-rex.cscjvvfseets.us-east-1.rds.amazonaws.com"
 
-        file = open('C:/Users/m4104/Desktop/ShopeeAnalysis/pwd.txt','r')
+        file = open('/app/ShopeeSite/pwd.txt','r')
         pwd = file.read().rstrip()
         
         self.conn = MySQLdb.connect(host, port=3306, user='rex', passwd=pwd, db="shopee2019")        
         self.cur = self.conn.cursor()
+    
+    def check_shop(self):
+        sql = "SELECT * FROM shopee2019.shops WHERE shop_id IN (%s);"
+        val = (self.shopid,)
+        self.cur.execute(sql,val)
+        return self.cur.fetchall()
     
     # 檢查資料庫是否已有重複資料
     def check_item(self):
@@ -37,11 +44,11 @@ class Crawler:
     
     # 以MySQL插入使用者蝦皮賣場ID及名字
     def shops(self):
-        
-        sql = "INSERT INTO shopee2019.shops (shop_id, shop_name) VALUES (%s, %s)"
-        val = (self.shopid, shopname)
-        self.cur.execute(sql, val)            
-        self.conn.commit()
+        if not self.check_shop():
+            sql = "INSERT INTO shopee2019.shops (shop_id, shop_name) VALUES (%s, %s)"
+            val = (self.shopid, self.shopname)
+            self.cur.execute(sql, val)            
+            self.conn.commit()
     
     def iteminfo(self):
         if not self.check_item():
@@ -70,6 +77,7 @@ class Crawler:
         self.conn.close()
     
     def run(self):
+        self.shops()
         self.iteminfo()
         self.images()
         
