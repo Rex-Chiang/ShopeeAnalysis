@@ -6,14 +6,13 @@ from .Crawler import Crawler
 # 統計頁面負責呼叫Crawler.py擷取商品資訊
 def statistic(request):
     try:
-        shopname = request.POST['shop name']
+        shopname = request.POST['shopname']
         url = request.POST['url']
     except:
-        shopname = None
-        url = None
-        message = "Please enter the Shopee shop name & item's url if you want to analyze."
+        shopname = ""
+        url = ""
     
-    if shopname != None and url != None:
+    if shopname != "" and url != "":
         # 呼叫完整商品統計流程
         url_split = url.split(".")
         shopid = url_split[-2]
@@ -28,5 +27,8 @@ def statistic(request):
         post.save()
         
         message = 'Successful statistics !!'
+    
+    else:
+        message = "Please enter the Shopee shop name & item's url if you want to analyze."
         
     return render(request, 'statistic.html', locals())
